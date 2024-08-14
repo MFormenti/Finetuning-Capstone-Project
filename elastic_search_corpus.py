@@ -3,7 +3,7 @@ import json
 
 es = Elasticsearch(
     hosts=["https://elastic.hpc-crc.duckdns.org"],  # Replace with your Elasticsearch host
-    http_auth=("juan.grados", "57fc9e91375496866fd9ef5aabc0bdcc4cc86892"),
+    http_auth=("juan.grados", ""),
     verify_certs=False    # Do not verify SSL certificates
 )
 
