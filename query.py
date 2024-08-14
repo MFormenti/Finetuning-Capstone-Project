@@ -1,7 +1,11 @@
 from elasticsearch import Elasticsearch
 
 # Connect to Elasticsearch
-es = Elasticsearch([{'host': 'localhost', 'port': 9200, 'scheme':'http'}])
+es = Elasticsearch(
+    hosts=["https://elastic.hpc-crc.duckdns.org"],  # Replace with your Elasticsearch host
+    http_auth=("juan.grados", ""),
+    verify_certs=False    # Do not verify SSL certificates
+)
 
 # Define the index name
 index_name = "crypto_module"
@@ -10,8 +14,8 @@ index_name = "crypto_module"
 query = {
     "query": {
         "multi_match": {
-            "query": "How to use RSA with SymPy",
-            "fields": ["function_name^5", "sections.summary"]
+            "query": "How to use Diffie Hellman with SymPy",
+            "fields": ["function_name^5", "sections.summary", "docstring"]
         }
     }
 }
@@ -27,9 +31,9 @@ for hit in response['hits']['hits']:
 
 
 # Print out the results
-#for hit in response['hits']['hits']:
-#    print(f"Function Name: {hit['_source']['function_name']}")
-#    print(f"Summary: {hit['_source']['sections'].get('summary', 'No summary available')}")
-#    print(f'Score : {hit["_score"]}')
-#    print(f'Source : {hit["_source"]}')
-#    print("----")
+for hit in response['hits']['hits']:
+    print(f"Function Name: {hit['_source']['function_name']}")
+    print(f"Summary: {hit['_source']['sections'].get('summary', 'No summary available')}")
+    print(f'Score : {hit["_score"]}')
+    print(f'Source : {hit["_source"]}')
+    print("----")

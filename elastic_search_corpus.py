@@ -1,8 +1,11 @@
 from elasticsearch import Elasticsearch, helpers
 import json
 
-# Connect to Elasticsearch
-es = Elasticsearch([{'host': 'localhost', 'port': 9200, 'scheme': 'http'}])
+es = Elasticsearch(
+    hosts=["https://elastic.hpc-crc.duckdns.org"],  # Replace with your Elasticsearch host
+    http_auth=("juan.grados", ""),
+    verify_certs=False    # Do not verify SSL certificates
+)
 
 # Define the index name
 index_name = "crypto_module"
@@ -15,20 +18,20 @@ if es.indices.exists(index=index_name):
 mapping = {
     "mappings": {
         "properties": {
-            "function_name": {"type": "text", "analyzer": "english"},
-            "docstring": {"type": "text", "analyzer": "english"},
+            "function_name": {"type": "text", "analyzer": "whitespace"},
+            "docstring": {"type": "text", "analyzer": "standard"},
             "sections": {
                 "type": "object",
                 "properties": {
-                    "summary": {"type": "text", "analyzer": "english"},
-                    "parameters": {"type": "text", "analyzer": "english"},
-                    "returns": {"type": "text", "analyzer": "english"},
-                    "explanation": {"type": "text", "analyzer": "english"},
-                    "related_functions": {"type": "text", "analyzer": "english"},
-                    "examples": {"type": "text", "analyzer": "english"},
-                    "notes": {"type": "text", "analyzer": "english"},
-                    "references": {"type": "text", "analyzer": "english"},
-                    "see_also": {"type": "text", "analyzer": "english"}
+                    "summary": {"type": "text", "analyzer": "standard"},
+                    "parameters": {"type": "text", "analyzer": "standard"},
+                    "returns": {"type": "text", "analyzer": "standard"},
+                    "explanation": {"type": "text", "analyzer": "standard"},
+                    "related_functions": {"type": "text", "analyzer": "whitespace"},
+                    "examples": {"type": "text", "analyzer": "standard"},
+                    "notes": {"type": "text", "analyzer": "standard"},
+                    "references": {"type": "text", "analyzer": "whitespace"},
+                    "see_also": {"type": "text", "analyzer": "standard"}
                 }
             }
         }
